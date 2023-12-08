@@ -28,7 +28,7 @@
                             <span>4</span>
                             <button type="button" class="quantity_button">&#43;</button>
                         </td>
-                        <td>Margherita</td>
+                        <td>Margherita 9"</td>
                         <td>45 €</td>
 
                     </tr>
@@ -39,3 +39,44 @@
         </div>
     </div>
 </template>
+<style scoped>
+h3 {
+    text-align: center;
+}
+
+.menu_wrapper {
+    display: flex;
+    flex-direction: column;
+    color: rgb(80, 96, 112);
+}
+
+.menu,
+.basket {
+    background: #faf1e2;
+    border-radius: 3px;
+    height: 100vh;
+    padding: 1rem;
+}
+
+.quantity_btn {
+    border: none;
+    padding: 0.4rem;
+}
+
+@media(min-width: 900px) {
+    .menu_wrapper {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .menu {
+        flex: 2;
+        border-right: 1px solid rgb(202, 202, 202);
+
+    }
+
+    .basket {
+        flex: 1;
+    }
+}
+</style>
