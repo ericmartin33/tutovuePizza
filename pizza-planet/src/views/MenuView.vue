@@ -13,7 +13,7 @@
                     <tr v-for="(option, index) in item.options" :key="option[index]">
                         <td>{{ option.size }}"</td>
                         <td>{{ option.price }} €</td>
-                        <td><button type="button" @click="addToBasket">&#43;</button></td>
+                        <td><button type="button" @click="addToBasket(item, option)">&#43;</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -25,9 +25,10 @@
                     <tbody v-for="(item, index) in basket" :key="index">
                         <tr>
                             <td>
-                                <button type="button" class="quantity_button">&#8722;</button>
+                                <button type="button" class="quantity_button"
+                                    @click="decreaseQuantity(item)">&#8722;</button>
                                 <span>{{ item.quantity }}</span>
-                                <button type="button" class="quantity_button">&#43;</button>
+                                <button type="button" class="quantity_button" @click="increaseQuantity(item)">&#43;</button>
                             </td>
                             <td>{{ item.name }} {{ item.size }}"</td>
                             <td>{{ item.quantity * item.price }} €</td>
@@ -35,7 +36,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <p>Order total : $ 99</p>
+                <p>Order total : $ {{ total }}</p>
                 <button>Place order</button>
             </div>
         </div>
@@ -43,7 +44,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 const allPizzas = ref([
     {
         name: 'Margherita',
@@ -58,9 +59,46 @@ const allPizzas = ref([
 ]);
 const basket = ref([]);
 
-function addToBasket() {
-    basket.value.push();
+function addToBasket(item, option) {
+    const pizzaExists = basket.value.find(function (pizza) {
+        return pizza.name === item.name && pizza.size === option.size;
+    });
+
+    if (pizzaExists) {
+        pizzaExists.quantity++;
+        return;
+    }
+
+    basket.value.push(
+        {
+            name: item.name,
+            price: option.price,
+            size: option.size,
+            quantity: 1
+        }
+    );
 }
+
+function increaseQuantity(item) {
+    item.quantity++;
+}
+
+function decreaseQuantity(item) {
+    item.quantity--;
+    if (item.quantity === 0) {
+        removeFromBasket(item);
+    }
+}
+
+function removeFromBasket(item) {
+    basket.value.splice(basket.value.indexOf(item), 1);
+}
+
+const total = computed(function () {
+    let totalCost = 0;
+    basket.value.forEach(function (item) { totalCost += item.quantity * item.price; });
+    return totalCost;
+});
 
 </script>
 <style scoped>
@@ -82,7 +120,7 @@ h3 {
     padding: 1rem;
 }
 
-.quantity_btn {
+.quantity_button {
     border: none;
     padding: 0.4rem;
 }
