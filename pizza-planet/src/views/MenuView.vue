@@ -3,17 +3,17 @@
         <div class="menu">
             <h3>~ Authentic handmade pizza ~</h3>
             <table>
-                <tbody>
+                <tbody v-for="(item, index) in allPizzas" :key="index">
                     <tr>
-                        <td><strong>~ Margherita ~</strong></td>
+                        <td><strong>~ {{ item.name }} ~</strong></td>
                     </tr>
                     <tr>
-                        <td><small>A delicious tomato pizza with mozarella</small></td>
+                        <td><small>{{ item.description }}</small></td>
                     </tr>
-                    <tr>
-                        <td>9"</td>
-                        <td>7,98€</td>
-                        <td><button type="button">&#43;</button></td>
+                    <tr v-for="(option, index) in item.options" :key="option[index]">
+                        <td>{{ option.size }}"</td>
+                        <td>{{ option.price }} €</td>
+                        <td><button type="button" @click="addToBasket">&#43;</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -22,23 +22,47 @@
             <h3>~ Basket ~</h3>
             <div>
                 <table>
-                    <tr>
-                        <td>
-                            <button type="button" class="quantity_button">&#8722;</button>
-                            <span>4</span>
-                            <button type="button" class="quantity_button">&#43;</button>
-                        </td>
-                        <td>Margherita 9"</td>
-                        <td>45 €</td>
+                    <tbody v-for="(item, index) in basket" :key="index">
+                        <tr>
+                            <td>
+                                <button type="button" class="quantity_button">&#8722;</button>
+                                <span>{{ item.quantity }}</span>
+                                <button type="button" class="quantity_button">&#43;</button>
+                            </td>
+                            <td>{{ item.name }} {{ item.size }}"</td>
+                            <td>{{ item.quantity * item.price }} €</td>
 
-                    </tr>
+                        </tr>
+                    </tbody>
                 </table>
-                <p>Order total : $99</p>
+                <p>Order total : $ 99</p>
                 <button>Place order</button>
             </div>
         </div>
     </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+const allPizzas = ref([
+    {
+        name: 'Margherita',
+        description: 'Delicious tomato based pizza',
+        options: [{ size: 9, price: 9.99 }, { size: 12, price: 14 }]
+    },
+    {
+        name: 'Pepperoni',
+        description: 'PepeeeeronnIIIIiii',
+        options: [{ size: 9, price: 11 }, { size: 12, price: 18 }]
+    }
+]);
+const basket = ref([]);
+
+function addToBasket() {
+    basket.value.push();
+}
+
+</script>
 <style scoped>
 h3 {
     text-align: center;
