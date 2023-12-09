@@ -1,7 +1,6 @@
-
 import { RouterView } from 'vue-router';
-
 import { RouterLink } from 'vue-router';
+
 <template>
   <div class="about">
     <section class="intro">
