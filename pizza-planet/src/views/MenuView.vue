@@ -3,14 +3,14 @@
         <div class="menu">
             <h3>~ Authentic handmade pizza ~</h3>
             <table>
-                <tbody v-for="(item, index) in allPizzas" :key="index">
+                <tbody v-for="pizza in allPizzas" :key="pizza.id">
                     <tr>
-                        <td><strong>~ {{ item.name }} ~</strong></td>
+                        <td><strong>~ {{ pizza.name }} ~</strong></td>
                     </tr>
                     <tr>
-                        <td><small>{{ item.description }}</small></td>
+                        <td><small>{{ pizza.description }}</small></td>
                     </tr>
-                    <tr v-for="(option, index) in item.options" :key="option[index]">
+                    <tr v-for="option in pizza.options" :key="pizza.id + option.size">
                         <td>{{ option.size }}"</td>
                         <td>{{ option.price }} €</td>
                         <td><button type="button" @click="addToBasket(item, option)">&#43;</button></td>
@@ -44,23 +44,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+
 import useBasket from '@/composables/useBasket';
+import usePizzas from '../composables/usePizzas';
 
 const { basket, increaseQuantity, decreaseQuantity, addToBasket, total } = useBasket();
-
-const allPizzas = ref([
-    {
-        name: 'Margherita',
-        description: 'Delicious tomato based pizza',
-        options: [{ size: 9, price: 9.99 }, { size: 12, price: 14 }]
-    },
-    {
-        name: 'Pepperoni',
-        description: 'PepeeeeronnIIIIiii',
-        options: [{ size: 9, price: 11 }, { size: 12, price: 18 }]
-    }
-]);
+const { allPizzas } = usePizzas();
 
 </script>
 <style scoped>

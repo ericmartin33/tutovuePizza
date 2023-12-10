@@ -37,7 +37,7 @@
             </div>
             <div class="form_group">
                 <button @click.prevent="add">Add</button>
-                <span> {{ message }}</span>
+                <span class="message"> {{ message }}</span>
             </div>
         </form>
     </section>
@@ -65,3 +65,10 @@ async function add() {
     }
 }
 </script>
+
+
+<style scoped>
+.message {
+    margin-left: 1rem;
+}
+</style>
