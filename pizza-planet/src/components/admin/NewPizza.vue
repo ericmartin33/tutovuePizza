@@ -36,7 +36,7 @@
                 <input type="text" id="price1" v-model="newPizza.options[1].price" />
             </div>
             <div class="form_group">
-                <button>Add</button>
+                <button @click.prevent="add">Add</button>
             </div>
         </form>
     </section>
@@ -44,11 +44,21 @@
 
 <script setup>
 import { ref } from 'vue';
+import { addDoc } from 'firebase/firestore'
+import { dbPizzasRef } from '../../firebase';
 
 const newPizza = ref({
     name: 'eg. Margherita',
     description: 'Eg. delicious tomato based pizza',
     options: [{ size: 9, price: 9.99 }, { size: 12, price: 99 }]
 })
+
+async function add() {
+    try {
+        await addDoc(dbPizzasRef, newPizza.value);
+    } catch (e) {
+        console.log(e);
+    }
+}
 
 </script>
