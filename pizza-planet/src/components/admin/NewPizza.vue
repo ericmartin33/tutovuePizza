@@ -37,6 +37,7 @@
             </div>
             <div class="form_group">
                 <button @click.prevent="add">Add</button>
+                <span> {{ message }}</span>
             </div>
         </form>
     </section>
@@ -47,6 +48,7 @@ import { ref } from 'vue';
 import { addDoc } from 'firebase/firestore'
 import { dbPizzasRef } from '../../firebase';
 
+const message = ref('');
 const newPizza = ref({
     name: 'eg. Margherita',
     description: 'Eg. delicious tomato based pizza',
@@ -56,9 +58,10 @@ const newPizza = ref({
 async function add() {
     try {
         await addDoc(dbPizzasRef, newPizza.value);
+        message.value = `Pizza ${newPizza.value.name} is added`
     } catch (e) {
         console.log(e);
+        message.value = `there was an errore`
     }
 }
-
 </script>
